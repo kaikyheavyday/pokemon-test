@@ -82,9 +82,9 @@ export default function Home() {
             >
               <img src={pokemon.image} alt={pokemon.name} width={80} />
               <div className="pl-2">
-                <p className="text-base capitalize font-semibold">
+                <h2 className="text-base capitalize font-semibold">
                   {pokemon.name}
-                </p>
+                </h2>
                 <div className="flex gap-2 mt-2">
                   {pokemon.types.map((type: IPokemonType) => {
                     return (
