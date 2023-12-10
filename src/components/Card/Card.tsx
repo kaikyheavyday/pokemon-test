@@ -1,9 +1,11 @@
 import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 type PropsType = {
   pokemon: IPokemon;
 };
 export default function Card({ pokemon }: PropsType) {
+  const navigate = useNavigate();
   return (
     <div className="shadow-lg rounded-lg">
       <img src={pokemon.image} alt={pokemon.name} className="w-full" />
@@ -24,6 +26,9 @@ export default function Card({ pokemon }: PropsType) {
         <Button
           type="text"
           className="mt-2 w-full text-white bg-black hover:bg-primary rounded-lg font-semibold"
+          onClick={() => {
+            navigate(`/pokemon/${pokemon.id}`);
+          }}
         >
           Detail
         </Button>
