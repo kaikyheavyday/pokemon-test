@@ -4,27 +4,31 @@ import Card from "../../components/Card/Card";
 import { Col, Radio, Row } from "antd";
 import MenuIcon from "../../assets/icons/menu.svg";
 import ListIcon from "../../assets/icons/list.svg";
-import { useStore } from "../../store/query.store";
+import { useStore } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
-  const [isMenu, setIsMemu] = useState(false);
   const navigate = useNavigate();
-  const { query, setQuery } = useStore();
+  const { query, setQuery, search, isMenu, setIsMenu } = useStore();
 
   useEffect(() => {
     setQuery({
       offset: 0,
       limit: 12,
     });
-    fetchPokemonData();
-  }, []);
+    if (search) {
+      setPokemonList([]);
+      fetchSearchPokemon();
+    } else {
+      fetchPokemonData();
+    }
+  }, [search]);
 
   const fetchPokemonData = async () => {
     try {
       const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon?offset=${query.offset}&limit=${query.limit}`
+        `https://pokeapi.co/api/v2/pokemon?offset=${query.offset}&limit=${query.limit}&search=pi`
       );
       const results = response.data.results;
 
@@ -46,13 +50,35 @@ export default function Home() {
       console.error("Error fetching Pokemon data:", error);
     }
   };
+
+  const fetchSearchPokemon = async () => {
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
+      );
+      let pokemonLists = [];
+      const pokemonDetail = {
+        id: response.data.id,
+        name: response.data.name,
+        image: response.data.sprites.front_default,
+        types: response.data.types,
+        abilities: response.data.abilities,
+        stats: response.data.stats,
+      };
+      pokemonLists.push(pokemonDetail);
+      setPokemonList(pokemonLists);
+    } catch (error) {
+      console.error("Error fetching Pokemon data:", error);
+    }
+  };
   return (
     <div>
+      {search}
       <div className="flex justify-between">
         <h2 className="text-base font-semibold">Products (12)</h2>
         <Radio.Group
           defaultValue={isMenu}
-          onChange={(e) => setIsMemu(e.target.value)}
+          onChange={(e) => setIsMenu(e.target.value)}
         >
           <Radio.Button value={true} style={{ paddingTop: "6px" }}>
             <img src={MenuIcon} alt="icon-menu" />

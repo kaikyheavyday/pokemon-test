@@ -9,8 +9,12 @@ import {
 import { IoBagOutline } from "react-icons/io5";
 const { Header } = Layout;
 import Logo from "../../assets/logo.svg";
+import { useStore } from "../../store/store";
+import { useState } from "react";
 
 export default function Navbar() {
+  const { setSearch } = useStore();
+  const [value, setValue] = useState("");
   return (
     <>
       <Header className="flex flex-wrap items-center bg-primary justify-between px-40">
@@ -41,6 +45,20 @@ export default function Navbar() {
           prefix={<CiSearch className="text-primary text-lg" />}
           className="w-2/5"
           allowClear
+          value={value}
+          onChange={(e) => {
+            if (!e.target.value) {
+              setSearch("");
+              setValue("");
+            } else {
+              setValue(e.target.value);
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setSearch(value);
+            }
+          }}
         />
         <div className="flex gap-3 items-center">
           <div className="flex gap-2 items-center">

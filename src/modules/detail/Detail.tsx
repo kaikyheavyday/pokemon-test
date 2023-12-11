@@ -1,14 +1,17 @@
 import { Button, InputNumber } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { IoBagOutline } from "react-icons/io5";
+import { useStore } from "../../store/store";
 
 export default function PokemonDetail() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [pokemon, setPokemon] = useState<IPokemon | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const { cart, setCart } = useStore();
 
   const fetchPokemon = async () => {
     try {
@@ -29,9 +32,29 @@ export default function PokemonDetail() {
     }
   };
   useEffect(() => {
+    setCart(cart);
     fetchPokemon();
-    console.log(id);
   }, []);
+
+  const addToCart = () => {
+    let cartList = cart;
+    let checkCartIndex = cartList.findIndex(
+      (item: any) => item.pokemon.id == id
+    );
+    if (pokemon) {
+      if (checkCartIndex !== -1) {
+        cartList[checkCartIndex].quantity =
+          cartList[checkCartIndex].quantity + quantity;
+      } else {
+        cartList.push({
+          pokemon,
+          quantity,
+        });
+      }
+    }
+    setCart(cartList);
+    navigate("/checkout");
+  };
 
   return (
     <>
@@ -105,6 +128,7 @@ export default function PokemonDetail() {
             danger
             size="large"
             className="w-48"
+            onClick={addToCart}
           >
             Add to pocket
           </Button>
