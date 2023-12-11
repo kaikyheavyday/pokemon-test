@@ -27,7 +27,7 @@ export default function Checkout() {
                   return (
                     <div
                       key={type.slot}
-                      className="bg-primaryLight text-primaryText font-bold capitalize px-2 py-1"
+                      className="bg-primaryLight text-primaryText rounded-lg font-bold capitalize px-2 py-1"
                     >
                       {type.type.name}
                     </div>
@@ -70,16 +70,16 @@ export default function Checkout() {
   };
   return (
     <>
-      <Row gutter={16}>
-        <Col span={18}>
-          <div className="bg-white mr-9 rounded-lg">
+      <Row gutter={[16, 24]}>
+        <Col xs={24} md={18}>
+          <div className="bg-white mr-0 md:mr-9 rounded-lg">
             <h2 className="p-4 text-base font-semibold">
               Pocket list ({cart.length})
             </h2>
             <Table columns={columns} dataSource={cart} pagination={false} />
           </div>
         </Col>
-        <Col span={6}>
+        <Col xs={24} md={6}>
           <div className="shadow-lg rounded-b-lg">
             <h2 className="bg-orange-100 rounded-t-lg p-3">
               <p className="text-base font-semibold">Order Summary</p>

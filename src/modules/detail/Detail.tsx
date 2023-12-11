@@ -58,8 +58,8 @@ export default function PokemonDetail() {
 
   return (
     <>
-      <div className="bg-white p-4 gap-20 flex h-80">
-        <img src={pokemon?.image} alt="" />
+      <div className="bg-white p-4 gap-20 flex flex-wrap w-full">
+        <img src={pokemon?.image} alt={pokemon?.name} className="w-72" />
         <div>
           <p className="text-base capitalize font-semibold">{pokemon?.name}</p>
           <div className="flex gap-2 mt-2">
@@ -67,7 +67,7 @@ export default function PokemonDetail() {
               return (
                 <div
                   key={type.slot}
-                  className="bg-primaryLight text-primaryText font-bold capitalize px-2 py-1"
+                  className="bg-primaryLight text-primaryText rounded-lg font-bold capitalize px-2 py-1"
                 >
                   {type.type.name}
                 </div>
