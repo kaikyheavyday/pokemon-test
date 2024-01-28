@@ -26,6 +26,7 @@ export default function Home() {
   }, [search]);
 
   const fetchPokemonData = async () => {
+    console.log("test")
     try {
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon?offset=${query.offset}&limit=${query.limit}&search=pi`
